@@ -96,7 +96,6 @@ solve	prev	b1=1 lambda=0.9
 solve	prev	b1=1 lambda=1.0
 tonyplot Si_pn_I-Lambda.log
 
-
 save outf=Si_pn_final.str
 tonyplot Si_pn_final.str
 
