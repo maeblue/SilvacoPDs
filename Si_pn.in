@@ -52,12 +52,23 @@ save outf=Si_pn.str
 ### Section 3: Simulation ###
 #############################
 
+#Problem 2:
 #We'll start with the dark current simulations
+#since no light sources have yet been defined
 log outfile=Si_pn_dark.log
-solve vcathode=0 vstep=5 vfinal=5 name=cathode outf=Si_pn_dark.str master
+solve vcathode=0 vstep=1 vfinal=5 name=cathode outf=Si_pn_dark.str master
 tonyplot Si_pn_dark.log
-tonyplot Si_pn_dark.sts
-tonyplot Si_pn_dark.stt
+
+#Problem 4:
+#The "master" command saves the structure at each incremental voltage
+#into the following files, with each increment in voltage corresponding
+#to a subsequent final letter in the file name.  i.e. 'r', 's', 't'
+#tonyplot Si_pn_dark.str
+#tonyplot Si_pn_dark.sts
+#tonyplot Si_pn_dark.stt
+#tonyplot Si_pn_dark.stu
+#tonyplot Si_pn_dark.stv
+#tonyplot Si_pn_dark.stw
 
 # Now we'll define a Single-wavelength source beam
 # located 1 micron above the PD, with light angled 
@@ -65,10 +76,11 @@ tonyplot Si_pn_dark.stt
 # Wavelength default is 400nm.  We can change it later.
 beam	num=1 x.origin=5.0 y.origin=-1.0 angle=90.0 wavelength=0.400
 
-#now we simulate the current at the given wavelength for different
-#cathode voltages, where the beam intensity is b1=1 Watt/cm^2
-#this info is saved into the .log file
-# !!! This is also where you get the answer to part 1 
+#Problem 1:
+#Now we simulate the response at the given wavelength for 
+#cathode voltage of 5V, where the beam intensity is b1=1 Watt/cm^2
+#this info is saved into the .log file, and we can plot the
+#photogeneration rate from the individual .str files 
 solve	init
 solve	vcathode=5
 log outfile=Si_pn_5V_spec.log
@@ -83,9 +95,17 @@ tonyplot	Si_pn_l1.str
 tonyplot	Si_pn_l2.str
 tonyplot	Si_pn_l3.str
 
+#Problem 3
+#now we reset the system at 5V, and simulate the response
+#to each wavelength
 log outf=reset.log
 solve	init
 solve	vcathode = 5
+#Remember, log files contain every "solve" output that
+#exists between them and the next "log" declaration
+#without the "reset.log" declaration, the previous
+#log file would include the above solutions, which we 
+#don't care about.
 log outf=Si_pn_I-Lambda.log
 solve	prev	b1=1 lambda=0.4
 solve	prev	b1=1 lambda=0.5
